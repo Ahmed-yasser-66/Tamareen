@@ -1,3 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  font-family: 'Oswald', sans-serif;
+}
+
+@layer components {
+  .text-gradient {
+    background: linear-gradient(90deg, #0092ca, #66c2e0);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #222831;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #0092ca;
+  border-radius: 16px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #66c2e0;
+}

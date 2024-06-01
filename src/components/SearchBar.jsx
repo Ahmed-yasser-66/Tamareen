@@ -13,6 +13,7 @@ function SearchBar() {
     if (!searchQuery) return;
 
     getExercisesByName(searchQuery);
+    setSearchQuery('');
   }
 
   return (

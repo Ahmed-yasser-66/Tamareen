@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import arrowDown from '../assets/arrow-down.svg';
 import arrowUp from '../assets/arrow-up.svg';
+import { Link } from 'react-router-dom';
 
 const Dropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,43 +37,19 @@ const Dropdown = () => {
       {isOpen && (
         <div
           id="dropdown"
-          className="absolute right-0 z-10 mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+          className="absolute right-0 z-10 mt-2 bg-white divide-y rounded-lg shadow w-44 "
         >
           <ul
-            className="py-2 text-sm text-gray-700 dark:text-gray-200"
+            className="py-2 divide-y-2 text-md text-dark-gray divide-medium-gray sm:text-lg "
             aria-labelledby="dropdownDefaultButton"
           >
             <li>
-              <a
-                href="#"
-                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                Dashboard
-              </a>
+              <Link className="block px-4 py-2 ">Saved Exercises</Link>
             </li>
             <li>
-              <a
-                href="#"
-                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                Settings
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                Earnings
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                Sign out
-              </a>
+              <Link className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                Update Profile
+              </Link>
             </li>
           </ul>
         </div>

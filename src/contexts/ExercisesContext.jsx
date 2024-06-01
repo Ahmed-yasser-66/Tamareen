@@ -10,6 +10,7 @@ const initialState = {
   isLoading: false,
   limit: 6,
   offset: 0,
+  currentPage: 1,
   categories: [
     'back',
     'cardio',
@@ -23,6 +24,8 @@ const initialState = {
     'waist',
   ],
   selectedCategory: '',
+  searchContext: 'all', //all - name - category
+  searchQuery: '',
 };
 
 function reducer(state, action) {
@@ -31,10 +34,44 @@ function reducer(state, action) {
       return { ...state, isLoading: true };
 
     case 'exercises/loaded':
-      return { ...state, isLoading: false, exercises: action.payload };
+      return {
+        ...state,
+        isLoading: false,
+        exercises: action.payload,
+      };
 
     case 'category/changed':
-      return { ...state, selectedCategory: action.payload };
+      return {
+        ...state,
+        selectedCategory: action.payload,
+        searchContext: 'category',
+        offset: 0,
+        currentPage: 1,
+      };
+
+    case 'name/searched':
+      return {
+        ...state,
+        searchQuery: action.payload,
+        searchContext: 'name',
+        selectedCategory: '',
+        offset: 0,
+        currentPage: 1,
+      };
+
+    case 'page/changed':
+      return {
+        ...state,
+        currentPage: action.payload,
+        offset: (action.payload - 1) * state.limit,
+      };
+
+    case 'exercises/reset':
+      return {
+        ...state,
+        offset: 0,
+        searchContext: 'all',
+      };
 
     default:
       return state;
@@ -43,7 +80,17 @@ function reducer(state, action) {
 
 function ExercisesProvider({ children }) {
   const [
-    { exercises, isLoading, offset, limit, categories, selectedCategory },
+    {
+      exercises,
+      isLoading,
+      offset,
+      limit,
+      categories,
+      selectedCategory,
+      searchContext,
+      searchQuery,
+      currentPage,
+    },
     dispatch,
   ] = useReducer(reducer, initialState);
 
@@ -52,11 +99,22 @@ function ExercisesProvider({ children }) {
       async function fetchAllExercisesData() {
         dispatch({ type: 'loading' });
 
+        let url;
+        switch (searchContext) {
+          case 'name':
+            url = `${BASE_API_URL}/exercises/name/${searchQuery}?offset=${offset}&limit=${limit}`;
+            break;
+          case 'category':
+            url = `${BASE_API_URL}/exercises/bodyPart/${selectedCategory}?offset=${offset}&limit=${limit}`;
+            break;
+          case 'all':
+          default:
+            url = `${BASE_API_URL}/exercises?offset=${offset}&limit=${limit}`;
+            break;
+        }
+
         try {
-          const data = await fetchData(
-            `${BASE_API_URL}/exercises?offset=${offset}&limit=${limit}`,
-            exercisesOptions
-          );
+          const data = await fetchData(url, exercisesOptions);
 
           dispatch({ type: 'exercises/loaded', payload: data });
         } catch (err) {
@@ -66,36 +124,23 @@ function ExercisesProvider({ children }) {
 
       fetchAllExercisesData();
     },
-    [limit, offset]
+    [limit, offset, searchContext, searchQuery, selectedCategory]
   );
 
   async function getExercisesByName(name) {
-    dispatch({ type: 'loading' });
-
-    try {
-      const data = await fetchData(
-        `${BASE_API_URL}/exercises/name/${name}?offset=${offset}&limit=${limit}`,
-        exercisesOptions
-      );
-      dispatch({ type: 'exercises/loaded', payload: data });
-    } catch (err) {
-      console.log(err);
-    }
+    dispatch({ type: 'name/searched', payload: name });
   }
 
   async function getExercisesByCategory(category) {
-    dispatch({ type: 'loading' });
+    dispatch({ type: 'category/changed', payload: category });
+  }
 
-    try {
-      const data = await fetchData(
-        `${BASE_API_URL}/exercises/bodyPart/${category}?offset=${offset}&limit=${limit}`,
-        exercisesOptions
-      );
-      dispatch({ type: 'exercises/loaded', payload: data });
-      dispatch({ type: 'category/changed', payload: category });
-    } catch (err) {
-      console.log(err);
-    }
+  async function paginate(page) {
+    dispatch({ type: 'page/changed', payload: page });
+  }
+
+  async function backToAll() {
+    dispatch({ type: 'exercises/reset' });
   }
 
   return (
@@ -107,6 +152,11 @@ function ExercisesProvider({ children }) {
         categories,
         getExercisesByCategory,
         selectedCategory,
+        paginate,
+        currentPage,
+        limit,
+        offset,
+        backToAll,
       }}
     >
       {children}

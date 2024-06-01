@@ -3,7 +3,7 @@ import dumbellIcon from '../assets/dumbbell-solid.svg';
 
 function HomeNav() {
   return (
-    <nav className="flex items-center justify-between px-6 py-3 text-dark-gray sm:px-32 sm:py-4 backdrop-blur-sm bg-bright-blue">
+    <nav className="flex items-center justify-between px-2 py-3 text-dark-gray sm:px-32 sm:py-4 backdrop-blur-sm bg-bright-blue">
       <div className="flex items-center gap-4">
         <img src={dumbellIcon} className="w-6 h-6 sm:h-8 sm:w-8" />
         <Link
@@ -13,11 +13,11 @@ function HomeNav() {
           Tamareen
         </Link>
       </div>
-      <ul className="flex items-center gap-6 sm:gap-12">
+      <ul className="flex items-center sm:gap-12">
         <li>
           <Link
             to="/about"
-            className="text-xl font-medium transition-all duration-150 hover:text-light-gray sm:text-2xl"
+            className="mr-4 text-xl font-medium transition-all duration-150 hover:text-light-gray sm:text-2xl"
           >
             About
           </Link>

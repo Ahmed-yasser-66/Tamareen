@@ -27,13 +27,13 @@ function UserProvider({ children }) {
   );
 
   function updateUserName(name) {
-    dispatch({ type: 'userName/updated', payload: name });
     localStorage.setItem('userName', name);
+    dispatch({ type: 'userName/updated', payload: name });
   }
 
   function updateUserGender(gender) {
-    dispatch({ type: 'userGender/updated', payload: gender });
     localStorage.setItem('userGender', gender);
+    dispatch({ type: 'userGender/updated', payload: gender });
   }
 
   return (

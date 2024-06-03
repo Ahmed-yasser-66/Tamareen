@@ -6,6 +6,8 @@ import { useState } from 'react';
 function ExerciseBox({ exercise }) {
   const [imageIsloading, setImageIsLoading] = useState(true);
 
+  const { id } = exercise;
+
   return (
     <div className="px-2 pt-2 rounded-lg bg-gradient-to-b from-light-blue to-bright-blue">
       {imageIsloading && (
@@ -26,7 +28,7 @@ function ExerciseBox({ exercise }) {
           {exercise.bodyPart}
         </p>
         <Link
-          to="/app/exercise:id"
+          to={`/app/${id}`}
           className="flex items-center gap-1 text-lg underline transition-all duration-50 underline-offset-2 hover:opacity-90"
         >
           More Details

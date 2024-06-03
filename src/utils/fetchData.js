@@ -1,3 +1,5 @@
+const BASE_API_URL = 'https://exercisedb.p.rapidapi.com';
+
 export const exercisesOptions = {
   method: 'GET',
   headers: {
@@ -12,3 +14,15 @@ export const fetchData = async (url, options) => {
 
   return data;
 };
+
+export async function getExercise(id) {
+  const res = await fetch(
+    `${BASE_API_URL}/exercises/exercise/${id}`,
+    exercisesOptions
+  );
+
+  if (!res.ok) throw Error(`Couldn't find order #${id}`);
+
+  const data = await res.json();
+  return data;
+}

@@ -1,12 +1,15 @@
+import { Suspense, lazy } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ExercisesProvider } from './contexts/ExercisesContext';
-import { Suspense, lazy } from 'react';
-import Loader from './components/Loader';
 import { UserProvider } from './contexts/UserContext';
+import Loader from './components/Loader';
+import { loader as exerciseLoader } from './pages/ExerciseDetails';
+import ErrorPage from './pages/ErrorPage';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
 const About = lazy(() => import('./pages/About'));
 const AppLayout = lazy(() => import('./pages/AppLayout'));
+const ExerciseDetails = lazy(() => import('./pages/ExerciseDetails'));
 
 const router = createBrowserRouter([
   {
@@ -26,10 +29,13 @@ const router = createBrowserRouter([
         </UserProvider>
       </ExercisesProvider>
     ),
+    errorElement: <ErrorPage />,
   },
   {
-    path: 'app/:exercisesId',
-    element: <About />,
+    path: 'app/:Id',
+    element: <ExerciseDetails />,
+    loader: exerciseLoader,
+    errorElement: <ErrorPage />,
   },
 ]);
 

@@ -103,6 +103,7 @@ function ExercisesProvider({ children }) {
         switch (searchContext) {
           case 'name':
             url = `${BASE_API_URL}/exercises/name/${searchQuery}?offset=${offset}&limit=${limit}`;
+            console.log(searchQuery);
             break;
           case 'category':
             url = `${BASE_API_URL}/exercises/bodyPart/${selectedCategory}?offset=${offset}&limit=${limit}`;
@@ -141,6 +142,18 @@ function ExercisesProvider({ children }) {
 
   async function backToAll() {
     dispatch({ type: 'exercises/reset' });
+  }
+
+  async function getExercise(id) {
+    const res = await fetch(
+      `https://exercisedb.p.rapidapi.com/exercises/exercise/${id}`,
+      exercisesOptions
+    );
+
+    if (!res.ok) throw Error(`Couldn't find order #${id}`);
+
+    const { data } = await res.json();
+    return data;
   }
 
   return (

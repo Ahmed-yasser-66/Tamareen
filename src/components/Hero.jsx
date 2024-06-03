@@ -5,7 +5,7 @@ import arrowRight from '../assets/arrow-right.svg';
 
 function Hero() {
   return (
-    <main className="px-6 py-4 mt-10 md:mt-4 mx-8 sm:px-16 sm:py-6 h-[600px] flex justify-around items-center md:flex-row gap-3 flex-col">
+    <main className="px-6 py-4 mt-16 md:mt-4 mx-8 sm:px-16 sm:py-6 h-[600px] flex justify-around items-center md:flex-row gap-3 flex-col">
       <div>
         <h1 className="text-5xl leading-snug sm:text-7xl ">
           Enhance your

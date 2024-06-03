@@ -12,7 +12,7 @@ function SearchBar() {
 
     if (!searchQuery) return;
 
-    getExercisesByName(searchQuery);
+    getExercisesByName(searchQuery.toLocaleLowerCase());
     setSearchQuery('');
   }
 

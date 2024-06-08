@@ -6,9 +6,12 @@ import Loader from './Loader';
 import Pagination from './Pagination';
 
 function Exercises() {
-  const { isLoading, exercises, backToAll, offset } = useExercises();
+  const { isLoading, exercises, backToAll, offset, error } = useExercises();
 
   if (isLoading) return <Loader />;
+
+  if (error)
+    return <p className="mt-10 text-2xl font-semibold text-center">{error}</p>;
 
   if (!exercises.length)
     return (

@@ -9,9 +9,9 @@ function ExerciseBox({ exercise }) {
   const { id } = exercise;
 
   return (
-    <div className="px-2 pt-2 rounded-lg bg-gradient-to-b from-light-blue to-bright-blue">
+    <div className="relative px-2 pt-2 rounded-lg bg-gradient-to-b from-light-blue to-bright-blue">
       {imageIsloading && (
-        <div className="flex items-center justify-center h-full ">
+        <div className="flex items-center justify-center w-full ">
           <Loader />
         </div>
       )}

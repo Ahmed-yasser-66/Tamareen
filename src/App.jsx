@@ -8,7 +8,7 @@ import ErrorPage from './pages/ErrorPage';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
 const About = lazy(() => import('./pages/About'));
-const AppLayout = lazy(() => import('./pages/AppLayout'));
+const MainApp = lazy(() => import('./pages/MainApp'));
 const ExerciseDetails = lazy(() => import('./pages/ExerciseDetails'));
 
 const router = createBrowserRouter([
@@ -25,7 +25,7 @@ const router = createBrowserRouter([
     element: (
       <ExercisesProvider>
         <UserProvider>
-          <AppLayout />
+          <MainApp />
         </UserProvider>
       </ExercisesProvider>
     ),

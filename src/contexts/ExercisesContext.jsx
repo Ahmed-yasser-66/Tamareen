@@ -26,6 +26,7 @@ const initialState = {
   selectedCategory: '',
   searchContext: 'all', //all - name - category
   searchQuery: '',
+  error: null,
 };
 
 function reducer(state, action) {
@@ -73,6 +74,13 @@ function reducer(state, action) {
         searchContext: 'all',
       };
 
+    case 'exercises/error':
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
+      };
+
     default:
       return state;
   }
@@ -90,6 +98,7 @@ function ExercisesProvider({ children }) {
       searchContext,
       searchQuery,
       currentPage,
+      error,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
@@ -119,7 +128,11 @@ function ExercisesProvider({ children }) {
 
           dispatch({ type: 'exercises/loaded', payload: data });
         } catch (err) {
-          console.log(err);
+          dispatch({
+            type: 'exercises/error',
+            payload:
+              'Something went wrong 😥 , Check your internet connection!',
+          });
         }
       }
 
@@ -144,18 +157,6 @@ function ExercisesProvider({ children }) {
     dispatch({ type: 'exercises/reset' });
   }
 
-  async function getExercise(id) {
-    const res = await fetch(
-      `https://exercisedb.p.rapidapi.com/exercises/exercise/${id}`,
-      exercisesOptions
-    );
-
-    if (!res.ok) throw Error(`Couldn't find order #${id}`);
-
-    const { data } = await res.json();
-    return data;
-  }
-
   return (
     <ExercisesContext.Provider
       value={{
@@ -170,6 +171,7 @@ function ExercisesProvider({ children }) {
         limit,
         offset,
         backToAll,
+        error,
       }}
     >
       {children}

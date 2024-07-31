@@ -1,13 +1,18 @@
-import { useExercises } from '../contexts/ExercisesContext';
 import muscle from '../assets/muscle.svg';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useExercises } from '../contexts/ExercisesContext';
 
 function CategoryBox({ category }) {
-  const { getExercisesByCategory, selectedCategory } = useExercises();
+  const { resetExercises } = useExercises();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
+  const selectedCategory = searchParams.get('category');
   const isSelected = selectedCategory === category;
 
   function handleClick() {
-    getExercisesByCategory(category);
+    navigate(`/app/category?category=${category}`, { replace: true });
+    resetExercises();
   }
 
   return (

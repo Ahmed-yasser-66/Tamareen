@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import dumbellIcon from '../assets/dumbbell-solid.svg';
 import maleAvatar from '../assets/male-avatar.svg';
-import femaleAvtar from '../assets/female-avatar.svg';
+import femaleAvatar from '../assets/female-avatar.svg';
 import Dropdown from './Dropdown';
 import { useUser } from '../contexts/UserContext';
 
@@ -23,15 +23,15 @@ function AppNav() {
       </div>
 
       <div className="flex items-center gap-2 sm:gap-4">
-        <div className="w-10 h-10 px-1 py-1 rounded-full bg-medium-gray sm:px-2 sm:py-2 sm:w-14 sm:h-14">
+        <div className="w-10 h-10 px-1 py-1 rounded-full bg-medium-gray sm:px-2 sm:py-2 sm:w-16 sm:h-16">
           {userGender === 'male' ? (
             <img src={maleAvatar} />
           ) : (
-            <img src={femaleAvtar} />
+            <img src={femaleAvatar} className="w-12 -12" />
           )}
         </div>
 
-        <h2 className="text-lg font-semibold sm:text-2xl">
+        <h2 className="text-xl font-semibold sm:text-2xl">
           Welcome, {userName}!
         </h2>
         <Dropdown />

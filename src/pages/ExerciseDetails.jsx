@@ -1,25 +1,47 @@
 import { useState } from 'react';
-import { Link, useLoaderData } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import { getExercise, getYtVideos } from '../utils/fetchData';
+// import { getExercise, getYtVideos } from '../utils/fetchData';
 import arrowLeft from '../assets/arrow-left.svg';
 import Loader from '../components/Loader';
+import { useExercise } from '../hooks/useExercise';
+import { useYoutubeVideos } from '../hooks/useYoutubeVideos';
+import Footer from '../components/Footer';
 
 function ExerciseDetails() {
-  const { exercisesData, ytData } = useLoaderData();
+  const {
+    exercise,
+    isLoading: isLoadingExercise,
+    error: exerciseError,
+  } = useExercise();
+
+  const {
+    ytData,
+    isLoading: isLoadingVideos,
+    error: videosError,
+  } = useYoutubeVideos(exercise ? exercise.name : '');
+
   const [imageIsloading, setImageIsLoading] = useState(true);
+
+  if (isLoadingExercise || isLoadingVideos) return <Loader />;
+
+  if (exerciseError || videosError)
+    return (
+      <p className="mt-8 text-2xl font-semibold">
+        {exerciseError.message || videosError.message} 😥
+      </p>
+    );
 
   const ytVideos = ytData.contents;
 
-  console.log(ytVideos);
-
   return (
     <>
-      <Link to="/app">
-        <button className="flex items-center gap-2 px-3 py-1 mt-10 ml-8 rounded-lg bg-bright-blue">
-          <img src={arrowLeft} className="w-5 h-5" />
-          Back To All Exercises
-        </button>
+      <Link
+        to="/app"
+        className="flex items-center gap-2 p-2 mt-10 ml-8 rounded-lg w-fit bg-bright-blue"
+      >
+        <img src={arrowLeft} className="w-5 h-5" />
+        Back To All Exercises
       </Link>
       <div className="flex flex-col gap-6 px-5 py-10 mx-auto border-b-4 md:px-12 md:py-24 md:flex-row border-bright-blue">
         <div className="w-full mx-auto max-w-[35rem] p-2 rounded-xl bg-gradient-to-b from-light-blue to-bright-blue h-auto">
@@ -30,7 +52,7 @@ function ExerciseDetails() {
           )}
 
           <img
-            src={exercisesData.gifUrl}
+            src={exercise.gifUrl}
             className="w-full h-full rounded-xl"
             onLoad={() => setImageIsLoading(false)}
           />
@@ -38,14 +60,14 @@ function ExerciseDetails() {
 
         <div className="flex flex-col gap-6 px-5 mt-6 md:mt-0">
           <h1 className="text-3xl font-semibold underline sm:text-4xl underline-offset-4 text-gradient decoration-bright-blue">
-            {exercisesData.name}
+            {exercise.name}
           </h1>
 
           <div className="flex flex-col gap-5 mt-4">
             <h2 className="text-2xl font-medium sm:text-3xl">Instructions :</h2>
             <ol className="flex flex-col gap-5 text-xl list-decimal">
-              {exercisesData.instructions.map((inst) => (
-                <li>{inst}</li>
+              {exercise.instructions.map((inst, i) => (
+                <li key={i}>{inst}</li>
               ))}
             </ol>
           </div>
@@ -54,22 +76,25 @@ function ExerciseDetails() {
             <li className="text-xl uppercase">
               Body Part :{' '}
               <span className="px-2 py-0.5 ml-2 capitalize rounded-md bg-bright-blue">
-                {exercisesData.bodyPart}
+                {exercise.bodyPart}
               </span>
             </li>
 
             <li className="text-xl uppercase">
               Target :{' '}
               <span className="px-2 py-0.5 ml-2 capitalize rounded-md bg-bright-blue">
-                {exercisesData.target}
+                {exercise.target}
               </span>
             </li>
 
             <li className="text-xl uppercase ">
               secondary Muscles :{' '}
-              <div className="mt-2">
-                {exercisesData.secondaryMuscles.map((muscle) => (
-                  <span className="px-2 py-0.5 ml-2 capitalize rounded-md bg-bright-blue ">
+              <div className="flex flex-wrap gap-2 mt-2">
+                {exercise.secondaryMuscles.map((muscle, i) => (
+                  <span
+                    className="px-2 py-0.5 ml-2 capitalize rounded-md bg-bright-blue "
+                    key={i}
+                  >
                     {muscle}
                   </span>
                 ))}
@@ -83,40 +108,41 @@ function ExerciseDetails() {
         <h2 className="text-xl font-semibold sm:text-2xl">
           Youtube videos on the{' '}
           <span className="text-2xl font-bold sm:text-3xl text-bright-blue">
-            {exercisesData.name}
+            {exercise.name}
           </span>{' '}
           exercise
         </h2>
 
-        <div className="flex flex-col items-center justify-between gap-12 mx-auto mt-6 md:flex-row">
+        <div className="flex flex-col gap-8 my-12 md:flex-row">
           {ytVideos?.slice(0, 3)?.map((item, index) => (
             <a
               key={index}
               href={`https://www.youtube.com/watch?v=${item.video.videoId}`}
             >
-              <div className="h-auto p-2 rounded-lg bg-gradient-to-b from-light-blue to-bright-blue w-96">
-                <img className="w-full " src={item.video.thumbnails[0].url} />
-                <p className="mt-2 text-lg font-semibold text-left">
-                  {item.video.title}
-                </p>
-                <p className="mt-1 text-left">
-                  <span className="text-lg ">Chanell</span> :{' '}
-                  {item.video.channelName}
-                </p>
+              <div className="p-0 overflow-hidden rounded-lg bg-gradient-to-b from-light-blue to-bright-blue ">
+                <img
+                  className="object-cover w-full h-64 transition-all duration-150 ease-linear rounded-lg hover:scale-105"
+                  src={item.video.thumbnails[0].url}
+                />
+                <div className="p-2">
+                  <p className="mt-2 text-xl font-semibold text-left">
+                    {item.video.title.length > 35
+                      ? item.video.title.substring(0, 20) + '...'
+                      : item.video.title}
+                  </p>
+                  <p className="mt-1 text-left">
+                    <span className="text-lg ">Chanell</span> :{' '}
+                    {item.video.channelName}
+                  </p>
+                </div>
               </div>
             </a>
           ))}
         </div>
       </div>
+      <Footer />
     </>
   );
-}
-
-export async function loader({ params }) {
-  const exercisesData = await getExercise(params.Id);
-  const ytData = await getYtVideos(exercisesData.name);
-
-  return { exercisesData, ytData };
 }
 
 export default ExerciseDetails;

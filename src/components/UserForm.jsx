@@ -1,11 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useUser } from '../contexts/UserContext';
+import { createPortal } from 'react-dom';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 function UserForm() {
   const [name, setName] = useState('');
   const [gender, setGender] = useState('');
+  const navigate = useNavigate();
 
-  const { updateUserName, updateUserGender, userName, userGender } = useUser();
+  const { updateUserName, updateUserGender, userName, userGender, isEditMode } =
+    useUser();
 
   useEffect(
     function () {
@@ -18,23 +23,37 @@ function UserForm() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (!name || !gender) return;
+    if (!name || !gender) {
+      toast.error('Fill out all fields');
+      return;
+    }
 
     updateUserName(name);
     updateUserGender(gender);
+
+    if (isEditMode && name && gender) {
+      navigate('/app/init', { replace: true });
+      toast.success('Profile updated succesfully');
+    }
   }
 
-  return (
+  return createPortal(
     <div className="absolute inset-0 flex bg-slate-200/20 backdrop-blur-md">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-4 w-[90%] h-fit max-w-xl mx-auto mt-16 bg-gradient-to-t from-light-blue to-bright-blue p-4 z-50 rounded-lg"
       >
         <div className="mb-4 text-center">
-          <h1 className="text-3xl font-semibold">Welcome to TAMAREEN!</h1>
-          <h2 className="mt-2 text-xl ">
-            We need your Name and Gender for a better experience 😄
-          </h2>
+          {isEditMode ? (
+            <h1 className="text-3xl font-semibold">Update Your Profile 😄</h1>
+          ) : (
+            <>
+              <h1 className="text-3xl font-semibold">Welcome to TAMAREEN!</h1>
+              <h2 className="mt-2 text-xl ">
+                We need your Name and Gender for a better experience 😄
+              </h2>
+            </>
+          )}
         </div>
 
         <div className="flex flex-col gap-2">
@@ -61,10 +80,11 @@ function UserForm() {
         </div>
 
         <button className="px-2 py-2 mx-auto mt-6 text-lg font-semibold uppercase transition-all duration-100 rounded-lg w-36 bg-dark-gray hover:bg-medium-gray">
-          Start
+          {isEditMode ? 'Update' : 'Start'}
         </button>
       </form>
-    </div>
+    </div>,
+    document.body
   );
 }
 

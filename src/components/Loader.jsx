@@ -1,14 +1,30 @@
-function Loader() {
+import { Bars, MagnifyingGlass } from 'react-loader-spinner';
+
+function Loader({ type }) {
   return (
-    <div className="mx-auto text-center">
-      <div
-        className="inline-block w-8 h-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] mt-8"
-        role="status"
-      >
-        <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-          Loading...
-        </span>
-      </div>
+    <div className="flex items-center justify-center mx-auto mt-8">
+      {type === 'search' ? (
+        <MagnifyingGlass
+          visible={true}
+          height="80"
+          width="80"
+          ariaLabel="magnifying-glass-loading"
+          wrapperStyle={{}}
+          wrapperClass="magnifying-glass-wrapper"
+          glassColor="#c0efff"
+          color="#0092ca"
+        />
+      ) : (
+        <Bars
+          height="60"
+          width="60"
+          color="#0092ca"
+          ariaLabel="bars-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+        />
+      )}
     </div>
   );
 }

@@ -1,17 +1,20 @@
 import { useExercises } from '../contexts/ExercisesContext';
-import arrowLeft from '../assets/arrow-left.svg';
-
 import ExerciseBox from './ExerciseBox';
 import Loader from './Loader';
 import Pagination from './Pagination';
+import arrowLeft from '../assets/arrow-left.svg';
 
-function Exercises() {
-  const { isLoading, exercises, backToAll, offset, error } = useExercises();
+function Exercises({ error, isLoading, exercises }) {
+  const { offset, resetExercises } = useExercises();
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <Loader type="search" />;
 
   if (error)
-    return <p className="mt-10 text-2xl font-semibold text-center">{error}</p>;
+    return (
+      <p className="mt-10 text-2xl font-semibold text-center">
+        {error.message} 😥
+      </p>
+    );
 
   if (!exercises.length)
     return (
@@ -25,11 +28,11 @@ function Exercises() {
       <div className="w-[90%] grid place-content-center mx-auto my-10">
         {offset > 0 && (
           <button
-            className="flex items-center gap-2 p-2 mb-6 mr-auto text-sm font-semibold rounded-lg bg-bright-blue"
-            onClick={backToAll}
+            className="flex items-center gap-2 px-2 py-1 mb-6 mr-auto text-xl rounded-md bg-bright-blue"
+            onClick={resetExercises}
           >
-            <img src={arrowLeft} className="w-4 h-4" />
-            Back To All Exercises
+            <img src={arrowLeft} className="w-5 h-5" />
+            Back to first page
           </button>
         )}
         <ul className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 ">
@@ -38,7 +41,7 @@ function Exercises() {
           ))}
         </ul>
 
-        <Pagination />
+        <Pagination exercisesCount={exercises.length} />
       </div>
     </>
   );

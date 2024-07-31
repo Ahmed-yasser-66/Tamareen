@@ -1,13 +1,8 @@
-import { createContext, useContext, useEffect, useReducer } from 'react';
-import { exercisesOptions, fetchData } from '../utils/fetchData';
-
-const BASE_API_URL = 'https://exercisedb.p.rapidapi.com';
+import { createContext, useContext, useReducer, useEffect } from 'react';
 
 const ExercisesContext = createContext();
 
 const initialState = {
-  exercises: [],
-  isLoading: false,
   limit: 6,
   offset: 0,
   currentPage: 1,
@@ -23,43 +18,11 @@ const initialState = {
     'upper legs',
     'waist',
   ],
-  selectedCategory: '',
-  searchContext: 'all', //all - name - category
-  searchQuery: '',
-  error: null,
+  savedExercises: JSON.parse(localStorage.getItem('savedExercises')) || [],
 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'loading':
-      return { ...state, isLoading: true };
-
-    case 'exercises/loaded':
-      return {
-        ...state,
-        isLoading: false,
-        exercises: action.payload,
-      };
-
-    case 'category/changed':
-      return {
-        ...state,
-        selectedCategory: action.payload,
-        searchContext: 'category',
-        offset: 0,
-        currentPage: 1,
-      };
-
-    case 'name/searched':
-      return {
-        ...state,
-        searchQuery: action.payload,
-        searchContext: 'name',
-        selectedCategory: '',
-        offset: 0,
-        currentPage: 1,
-      };
-
     case 'page/changed':
       return {
         ...state,
@@ -71,14 +34,21 @@ function reducer(state, action) {
       return {
         ...state,
         offset: 0,
-        searchContext: 'all',
+        currentPage: 1,
       };
 
-    case 'exercises/error':
+    case 'savedExercises/added':
       return {
         ...state,
-        isLoading: false,
-        error: action.payload,
+        savedExercises: [...state.savedExercises, action.payload],
+      };
+
+    case 'savedExercises/removed':
+      return {
+        ...state,
+        savedExercises: state.savedExercises.filter(
+          (id) => id !== action.payload
+        ),
       };
 
     default:
@@ -87,91 +57,38 @@ function reducer(state, action) {
 }
 
 function ExercisesProvider({ children }) {
-  const [
-    {
-      exercises,
-      isLoading,
-      offset,
-      limit,
-      categories,
-      selectedCategory,
-      searchContext,
-      searchQuery,
-      currentPage,
-      error,
-    },
-    dispatch,
-  ] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  useEffect(
-    function () {
-      async function fetchAllExercisesData() {
-        dispatch({ type: 'loading' });
+  const { savedExercises } = state;
 
-        let url;
-        switch (searchContext) {
-          case 'name':
-            url = `${BASE_API_URL}/exercises/name/${searchQuery}?offset=${offset}&limit=${limit}`;
-            console.log(searchQuery);
-            break;
-          case 'category':
-            url = `${BASE_API_URL}/exercises/bodyPart/${selectedCategory}?offset=${offset}&limit=${limit}`;
-            break;
-          case 'all':
-          default:
-            url = `${BASE_API_URL}/exercises?offset=${offset}&limit=${limit}`;
-            break;
-        }
-
-        try {
-          const data = await fetchData(url, exercisesOptions);
-
-          dispatch({ type: 'exercises/loaded', payload: data });
-        } catch (err) {
-          dispatch({
-            type: 'exercises/error',
-            payload:
-              'Something went wrong 😥 , Check your internet connection!',
-          });
-        }
-      }
-
-      fetchAllExercisesData();
-    },
-    [limit, offset, searchContext, searchQuery, selectedCategory]
-  );
-
-  async function getExercisesByName(name) {
-    dispatch({ type: 'name/searched', payload: name });
-  }
-
-  async function getExercisesByCategory(category) {
-    dispatch({ type: 'category/changed', payload: category });
-  }
+  useEffect(() => {
+    localStorage.setItem('savedExercises', JSON.stringify(savedExercises));
+  }, [savedExercises]);
 
   async function paginate(page) {
     dispatch({ type: 'page/changed', payload: page });
   }
 
-  async function backToAll() {
+  async function resetExercises() {
     dispatch({ type: 'exercises/reset' });
+  }
+
+  function addToSavedExercises(id) {
+    dispatch({ type: 'savedExercises/added', payload: id });
+  }
+
+  function removeFromSavedExercises(id) {
+    dispatch({ type: 'savedExercises/removed', payload: id });
   }
 
   return (
     <ExercisesContext.Provider
       value={{
-        exercises,
-        isLoading,
-        getExercisesByName,
-        categories,
-        getExercisesByCategory,
-        selectedCategory,
+        ...state,
         paginate,
-        currentPage,
-        limit,
-        offset,
-        backToAll,
-        error,
+        resetExercises,
+        addToSavedExercises,
+        removeFromSavedExercises,
       }}
     >
       {children}

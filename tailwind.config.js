@@ -2,7 +2,14 @@
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      boxShadow: {
+        'custom-glow': '0 0 3px #fff, inset 0 0 3px #fff, 0 0 23px #0092ca',
+      },
+      animation: {
+        'bounce-fast': 'bounce 0.5s linear infinite',
+      },
+    },
     colors: {
       transparent: 'transparent',
       white: '#fff',

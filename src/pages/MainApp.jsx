@@ -1,9 +1,10 @@
 import AppNav from '../components/AppNav';
 import SearchBar from '../components/SearchBar';
-import Exercises from '../components/Exercises';
 import Categories from '../components/Categories';
 import { useUser } from '../contexts/UserContext';
 import UserForm from '../components/UserForm';
+import { Outlet } from 'react-router-dom';
+import Footer from '../components/Footer';
 
 function MainApp() {
   const { userName, userGender } = useUser();
@@ -16,10 +17,9 @@ function MainApp() {
         <AppNav />
         <Categories />
         <SearchBar />
-        <Exercises />
+        <Outlet />
       </div>
-
-      <footer className="h-12 bg-bright-blue"></footer>
+      <Footer />
     </div>
   );
 }

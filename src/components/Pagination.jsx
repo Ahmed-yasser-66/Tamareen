@@ -1,21 +1,24 @@
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useExercises } from '../contexts/ExercisesContext';
 
-function PaginationButtons() {
-  const { paginate, currentPage, exercises, limit } = useExercises();
+function Pagination({ exercisesCount }) {
+  const { paginate, currentPage, limit } = useExercises();
+  const [searchParams] = useSearchParams();
 
   function handlePrev() {
     paginate(currentPage - 1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function handleNext() {
     paginate(currentPage + 1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   return (
     <div>
-      <div className="flex gap-5 mt-8">
-        <Link>
+      <div className="flex gap-5 my-8">
+        <Link to={{ search: searchParams.toString() }}>
           <button
             className="flex items-center gap-1 px-2 py-1 text-xl font-semibold transition-all duration-75 rounded-lg bg-bright-blue hover:bg-light-blue disabled:bg-medium-gray disabled:cursor-not-allowed"
             disabled={currentPage === 1}
@@ -40,11 +43,11 @@ function PaginationButtons() {
           </button>
         </Link>
 
-        <Link>
+        <Link to={{ search: searchParams.toString() }}>
           <button
             className="flex items-center gap-1 px-2 py-1 text-xl font-semibold transition-all duration-75 rounded-lg bg-bright-blue hover:bg-light-blue disabled:bg-medium-gray disabled:cursor-not-allowed"
             onClick={handleNext}
-            disabled={exercises.length !== limit}
+            disabled={exercisesCount < limit}
           >
             Next
             <svg
@@ -69,4 +72,4 @@ function PaginationButtons() {
   );
 }
 
-export default PaginationButtons;
+export default Pagination;

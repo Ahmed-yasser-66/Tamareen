@@ -6,7 +6,7 @@ function Categories() {
 
   return (
     <div className="my-8">
-      <h2 className="text-4xl font-semibold tracking-wider text-center text-light-gray">
+      <h2 className="text-4xl font-semibold tracking-wider text-center">
         Body Parts
       </h2>
       <div className="flex gap-4 px-4 py-6 mx-auto overflow-x-scroll w-[90%] max-w-[40rem] justify-evenly">

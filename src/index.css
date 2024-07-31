@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,6 +12,49 @@ body {
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  .animatingGradient {
+    background: linear-gradient(297deg, #0092ca, #66c2e0);
+    background-size: 400% 400%;
+
+    -webkit-animation: gradientAnimation 28s ease infinite;
+    -o-animation: gradientAnimation 28s ease infinite;
+    animation: gradientAnimation 28s ease infinite;
+  }
+
+  @-webkit-keyframes gradientAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  @-o-keyframes gradientAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  @keyframes gradientAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
 }
 

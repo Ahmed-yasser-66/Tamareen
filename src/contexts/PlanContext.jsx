@@ -40,6 +40,17 @@ function reducer(state, action) {
       };
     }
 
+    case 'days/removed': {
+      const newExercises = [...state.exercises.slice(0, -1)];
+      localStorage.setItem('planDays', state.days - 1);
+      localStorage.setItem('planExercises', JSON.stringify(newExercises));
+      return {
+        ...state,
+        days: state.days - 1,
+        exercises: newExercises,
+      };
+    }
+
     case 'exercise/added': {
       const { day, exercise } = action.payload;
 
@@ -77,6 +88,12 @@ function reducer(state, action) {
       };
     }
 
+    case 'plan/deleted': {
+      localStorage.removeItem('planDays');
+      localStorage.removeItem('planName');
+      return { ...state, name: '', days: null, exercises: [] };
+    }
+
     default:
       return state;
   }
@@ -108,6 +125,14 @@ function PlanProvider({ children }) {
     dispatch({ type: 'days/added' });
   }
 
+  function removeDay() {
+    dispatch({ type: 'days/removed' });
+  }
+
+  function deletePlan() {
+    dispatch({ type: 'plan/deleted' });
+  }
+
   return (
     <PlanContext.Provider
       value={{
@@ -119,6 +144,8 @@ function PlanProvider({ children }) {
         addExercise,
         deleteExercise,
         addDay,
+        removeDay,
+        deletePlan,
       }}
     >
       {children}

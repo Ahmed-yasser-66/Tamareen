@@ -10,6 +10,7 @@ import Loader from './Loader';
 import PlanModal from './PlanModal';
 import { usePlan } from '../contexts/PlanContext';
 import toast from 'react-hot-toast';
+import ConfirmModal from './ConfirmModal';
 
 function ExerciseBox({ exercise, isInSavedPage, isInPlanPage }) {
   const { id } = exercise;
@@ -21,12 +22,23 @@ function ExerciseBox({ exercise, isInSavedPage, isInPlanPage }) {
     useExercises();
   const { deleteExercise } = usePlan();
   const [isSaved, setIsSaved] = useState(savedExercises.includes(id));
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(
     function () {
       setIsSaved(savedExercises.includes(id));
+
+      if (showDeleteModal) {
+        document.body.classList.add('overflow-hidden');
+      } else {
+        document.body.classList.remove('overflow-hidden');
+      }
+
+      return () => {
+        document.body.classList.remove('overflow-hidden');
+      };
     },
-    [id, savedExercises]
+    [showDeleteModal, id, savedExercises]
   );
 
   function handleSave() {
@@ -45,6 +57,14 @@ function ExerciseBox({ exercise, isInSavedPage, isInPlanPage }) {
 
   return (
     <>
+      {showDeleteModal && (
+        <ConfirmModal
+          confirmMessage={`Are you sure you want to DELETE this exercise (${exercise.name}) ?`}
+          action={() => handleDelete()}
+          btnMessage={'Yes, I want'}
+          setter={setShowDeleteModal}
+        />
+      )}
       <div className="relative px-2 pt-2 rounded-lg bg-gradient-to-b from-light-blue to-bright-blue">
         {modalIsOpen && (
           <PlanModal exercise={exercise} onOpenModal={setModalIsOpen} />
@@ -68,7 +88,7 @@ function ExerciseBox({ exercise, isInSavedPage, isInPlanPage }) {
               <img
                 src={trash}
                 className="w-6 h-6 cursor-pointer"
-                onClick={handleDelete}
+                onClick={() => setShowDeleteModal(true)}
               />
             )}
             <div

@@ -6,12 +6,12 @@ function PlanForm() {
   const { changeName, changeDays } = usePlan();
 
   const [planName, setPlanName] = useState('');
-  const [numDays, setNumDays] = useState(2);
+  const [numDays, setNumDays] = useState(null);
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (!planName) {
+    if (!planName || !numDays) {
       toast.error('Fill out all fields');
       return;
     }
@@ -52,9 +52,10 @@ function PlanForm() {
           <select
             className="px-2 py-1 text-xl rounded-md text-dark-gray focus:outline-none focus:ring focus:ring-bright-blue"
             id="days"
-            value={numDays}
+            value={''}
             onChange={(e) => setNumDays(e.target.value)}
           >
+            <option value={0}>Choose number of days</option>
             <option value={2}>2</option>
             <option value={3}>3</option>
             <option value={4}>4</option>

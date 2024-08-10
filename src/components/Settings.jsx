@@ -5,9 +5,12 @@ import plusMark from '../assets/plus.svg';
 import minusMark from '../assets/minus.svg';
 import deleteMark from '../assets/trash.svg';
 import settings from '../assets/settings.svg';
+import removeMark from '../assets/remove-mark.svg';
+import { useNavigate } from 'react-router-dom';
 
 function Settings({ setShowSettings }) {
-  const { addDay, exercises } = usePlan();
+  const { addDay, removeDay, exercises, deletePlan } = usePlan();
+  const navigate = useNavigate();
   const newDay = exercises.length + 1;
 
   function handleAddDay() {
@@ -21,25 +24,55 @@ function Settings({ setShowSettings }) {
     }
   }
 
+  function handleRemoveDay() {
+    if (exercises.length === 1) {
+      navigate('/app/init', { replace: true });
+      toast.success('Plan is deleted');
+      deletePlan();
+    } else {
+      removeDay();
+      navigate('/plan', { replace: true });
+      toast.success('Last day removed succesfully');
+      setShowSettings(false);
+    }
+  }
+
+  function handleDeltePlan() {
+    deletePlan();
+    navigate('/app/init');
+    toast.success('Plan is deleted succesfully');
+  }
+
   return createPortal(
     <div className="absolute inset-0 flex justify-center h-screen bg-slate-200/20 backdrop-blur-md">
-      <div className="w-[90%] max-w-[20rem] bg-bright-blue rounded-lg h-fit flex flex-col gap-4 text-2xl mt-12 py-6 space-y-4 items-center">
+      <div className="w-[90%] max-w-[20rem] bg-bright-blue rounded-lg h-fit flex flex-col gap-4 text-2xl mt-12 py-6 space-y-4 items-center relative">
+        <img
+          src={removeMark}
+          className="absolute p-1 rounded-lg cursor-pointer w-7 h-7 top-4 right-4 bg-danger"
+          onClick={() => setShowSettings(false)}
+        />
         <div className="flex items-center justify-center gap-2 w-7 h-7">
           <img src={settings} />
-          <p className="text-3xl font-semibold underline">Settings</p>
+          <p className="text-3xl font-semibold ">Settings</p>
         </div>
         <button
-          className="flex items-center gap-2 p-2 rounded-lg cursor-pointer bg-dark-gray w-fit"
+          className="flex items-center justify-center w-48 gap-2 p-2 rounded-lg cursor-pointer bg-dark-gray"
           onClick={handleAddDay}
         >
           <img src={plusMark} className="w-4 h-4" />
           Add new day
         </button>
-        <button className="flex items-center gap-2 p-2 rounded-lg cursor-pointer bg-dark-gray w-fit">
+        <button
+          className="flex items-center justify-center w-48 gap-2 p-2 rounded-lg cursor-pointer bg-dark-gray "
+          onClick={handleRemoveDay}
+        >
           <img src={minusMark} className="w-4 h-4" />
           remove last day
         </button>
-        <button className="flex items-center gap-2 p-2 rounded-lg cursor-pointer bg-dark-gray w-fit">
+        <button
+          className="flex items-center justify-center w-48 gap-2 p-2 rounded-lg cursor-pointer bg-dark-gray"
+          onClick={handleDeltePlan}
+        >
           <img src={deleteMark} className="w-4 h-4" />
           Delete Plan
         </button>

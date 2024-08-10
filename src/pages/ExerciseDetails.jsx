@@ -121,7 +121,7 @@ function ExerciseDetails() {
             >
               <div className="p-0 overflow-hidden rounded-lg bg-gradient-to-b from-light-blue to-bright-blue ">
                 <img
-                  className="object-cover w-full h-64 transition-all duration-150 ease-linear rounded-lg hover:scale-105"
+                  className="object-cover w-full h-64 transition-all duration-150 ease-linear rounded-lg hover:scale-105 aspect-video"
                   src={item.video.thumbnails[0].url}
                 />
                 <div className="p-2">

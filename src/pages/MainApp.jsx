@@ -5,6 +5,8 @@ import { useUser } from '../contexts/UserContext';
 import UserForm from '../components/UserForm';
 import { Outlet } from 'react-router-dom';
 import Footer from '../components/Footer';
+import ConfirmAction from '../components/ConfirmModal';
+import ConfirmModal from '../components/ConfirmModal';
 
 function MainApp() {
   const { userName, userGender } = useUser();

@@ -13,6 +13,7 @@ export default {
     colors: {
       transparent: 'transparent',
       white: '#fff',
+      danger: '#dc2626',
       'dark-gray': '#222831',
       'medium-gray': '#393e46',
       'bright-blue': '#0092ca',

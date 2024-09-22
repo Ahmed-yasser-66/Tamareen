@@ -5,7 +5,7 @@ const PlanContext = createContext();
 const initialState = {
   name: localStorage.getItem('planName') || '',
   days: localStorage.getItem('planDays')
-    ? parseInt(localStorage.getItem('planDays'), 10)
+    ? Number(localStorage.getItem('planDays'))
     : null,
   exercises: localStorage.getItem('planExercises')
     ? JSON.parse(localStorage.getItem('planExercises'))
@@ -20,11 +20,11 @@ function reducer(state, action) {
 
     case 'days/changed': {
       const newExercises = Array.from({ length: action.payload }, () => []);
-      localStorage.setItem('planDays', action.payload);
+      localStorage.setItem('planDays', Number(action.payload));
       localStorage.setItem('planExercises', JSON.stringify(newExercises));
       return {
         ...state,
-        days: action.payload,
+        days: Number(action.payload),
         exercises: newExercises,
       };
     }
@@ -35,7 +35,7 @@ function reducer(state, action) {
       localStorage.setItem('planExercises', JSON.stringify(newExercises));
       return {
         ...state,
-        days: state.days + 1,
+        days: Number(state.days + 1),
         exercises: newExercises,
       };
     }
@@ -46,7 +46,7 @@ function reducer(state, action) {
       localStorage.setItem('planExercises', JSON.stringify(newExercises));
       return {
         ...state,
-        days: state.days - 1,
+        days: Number(state.days - 1),
         exercises: newExercises,
       };
     }

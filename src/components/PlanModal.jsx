@@ -8,7 +8,7 @@ function PlanModal({ exercise, onOpenModal }) {
   const { days, addExercise, exercises } = usePlan();
 
   function handleAddExercise(index) {
-    const day = index + 1;
+    const day = Number(index + 1);
 
     const exerciseExists = exercises[day - 1].some(
       (existingExercise) => existingExercise.id === exercise.id

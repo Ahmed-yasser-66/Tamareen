@@ -47,7 +47,11 @@ function Creator() {
                 👨‍💻 I&apos;m a developer based in Egypt. I began my programming
                 journey when I was 15 years old.
                 <br />
-                {`(Cuurently...I'm ${calculateYears('6-6-2007')} 😃) `}
+                (Cuurently...I&apos;m{' '}
+                <span className="font-bold text-gradient">
+                  {`${calculateYears('6-6-2007')} `}{' '}
+                </span>
+                😃)
               </li>
               <li>
                 ☕ I&apos;m a coffee lover; I can not code without a cup of

@@ -3,11 +3,14 @@ import { usePlan } from '../contexts/PlanContext';
 import PlanForm from '../components/PlanForm';
 import PlanDay from '../components/PlanDay';
 import settings from '../assets/settings.svg';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Settings from '../components/Settings';
+import Loader from '../components/Loader';
+import { generatePlanPdf } from '../helpers';
+import downloadImg from '../assets/download.svg';
 
 function Plan() {
-  const { name, days } = usePlan();
+  const { name, days, exercises } = usePlan();
   const { planId } = useParams();
   const navigate = useNavigate();
   const [showSettings, setShowSettings] = useState(false);
@@ -26,7 +29,7 @@ function Plan() {
 
   function handleSelectDay(index) {
     navigate(`/plan/${index + 1}`, { replace: true });
-    window.scrollBy({ top: 300, behavior: 'smooth' });
+    window.scrollBy({ bottom: 0, behavior: 'smooth' });
   }
 
   if (!name || !days) return <PlanForm />;
@@ -46,8 +49,17 @@ function Plan() {
 
         {showSettings && <Settings setShowSettings={setShowSettings} />}
       </div>
+      <div className="mx-auto w-fit">
+        <button
+          className="flex items-center justify-center gap-2 px-2 py-2 mx-auto mt-8 text-lg rounded-lg md:text-2xl w-fit bg-bright-blue"
+          onClick={() => generatePlanPdf(exercises, name)}
+        >
+          Download Plan&apos;s PDF
+          <img src={downloadImg} className="w-5 h-5 md:w-8 md:h-8" />
+        </button>
+      </div>
       <div className="flex flex-col items-center justify-center w-full gap-6 px-4 mx-auto mt-16 sm:flex-row max-w-[80%] flex-wrap">
-        {Array.from({ length: days }).map((_, index) => (
+        {Array.from({ length: Number(days) }).map((_, index) => (
           <div
             key={index}
             className={`flex items-center justify-center w-48 h-24 py-4 text-center rounded-lg cursor-pointer md:w-96 animatingGradient ${+planId === +(index + 1) ? 'border-white border-4' : ''}`}
@@ -57,7 +69,10 @@ function Plan() {
           </div>
         ))}
       </div>
-      <PlanDay />
+
+      <Suspense fallback={<Loader />} key={planId}>
+        <PlanDay />
+      </Suspense>
     </div>
   );
 }

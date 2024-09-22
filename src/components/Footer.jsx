@@ -6,6 +6,7 @@ function Footer() {
         <a
           href="https://www.linkedin.com/in/ahmed-yasser-689391250/"
           className="underline decor "
+          target="blank"
         >
           Ahmed Yasser
         </a>{' '}

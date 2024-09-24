@@ -7,7 +7,8 @@ Welcome to **Tamareen**! We are your ultimate fitness companion, offering GIFs f
 - Browse a large library of exercises with GIFs and detailed instructions
 - Watch YouTube videos to master each move
 - Search for exercises by categories
-- Download your workout plan as a PDF
+- Create Your custom workout plan for the gym.
+- Download your workout plan as a PDF that has clickable links to show exercise details.
 
 ## 🛠️ Tech Stack
 
@@ -21,4 +22,32 @@ Welcome to **Tamareen**! We are your ultimate fitness companion, offering GIFs f
 ## 💾 API
 
 - **ExercisesDB**: A powerful API used to provide exercise data, GIFs, and more.
+
+
+ ## 🏁 Getting Started
+
+Follow these steps to set up and run the project locally.
+
+### Prerequisites
+
+Make sure you have the following installed:
+- [Node.js](https://nodejs.org/)
+- [npm](https://www.npmjs.com/) 
+
+### Installation
+
+1. Clone the repository:
+  
+   git clone https://github.com/Ahmed-yasser-66/Tamareen
+   cd Tamareen
+
+2. Install the dependencies:
+
+   npm install
+
+3. Run the development server
+
+   npm run dev
+
+### And Enjoy Coding and discovering 👨‍💻
 

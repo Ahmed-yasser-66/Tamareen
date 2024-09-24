@@ -31,9 +31,7 @@ function AppNav() {
           )}
         </div>
 
-        <h2 className="text-xl font-semibold sm:text-2xl">
-          Welcome, {userName}!
-        </h2>
+        <h2 className="text-xl font-semibold sm:text-2xl">Hi, {userName}!</h2>
         <Dropdown />
       </div>
     </nav>

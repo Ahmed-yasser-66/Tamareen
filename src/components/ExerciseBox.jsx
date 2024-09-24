@@ -52,6 +52,7 @@ function ExerciseBox({ exercise, isInSavedPage, isInPlanPage }) {
   function handleDelete() {
     const day = parseInt(planId, 10);
     deleteExercise(day, id);
+    setShowDeleteModal(false);
     toast.success('Exercise deleted successfully');
   }
 

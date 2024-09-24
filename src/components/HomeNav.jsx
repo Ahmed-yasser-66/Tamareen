@@ -44,7 +44,7 @@ function HomeNav() {
         </li>
         <li>
           <NavLink
-            to="/train-now"
+            to="/app/init"
             className={({ isActive }) =>
               `hidden px-6 py-2 text-xl font-medium rounded-lg sm:text-2xl bg-dark-gray text-light-gray drop-shadow-md md:block ${
                 isActive ? 'bg-light-gray text-dark-gray' : ''

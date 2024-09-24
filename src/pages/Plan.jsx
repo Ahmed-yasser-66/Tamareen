@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { usePlan } from '../contexts/PlanContext';
 import PlanForm from '../components/PlanForm';
 import PlanDay from '../components/PlanDay';
@@ -8,6 +8,7 @@ import Settings from '../components/Settings';
 import Loader from '../components/Loader';
 import { generatePlanPdf } from '../helpers';
 import downloadImg from '../assets/download.svg';
+import arrowLeft from '../assets/arrow-left.svg';
 
 function Plan() {
   const { name, days, exercises } = usePlan();
@@ -37,7 +38,7 @@ function Plan() {
   return (
     <div>
       <div className="relative flex flex-col items-center justify-center gap-4 mt-8 text-center sm:flex-row">
-        <h1 className="text-3xl underline sm:text-4xl underline-offset-4 decoration-bright-blue">
+        <h1 className="items-center justify-center mt-6 text-3xl underline underline-offset-4 decoration-bright-blue sm:text-4xl sm:mt-0">
           Your Plan : <span className="text-gradient">{name}</span>
         </h1>
         <img
@@ -49,6 +50,13 @@ function Plan() {
 
         {showSettings && <Settings setShowSettings={setShowSettings} />}
       </div>
+
+      <div className="absolute px-2 py-1 mt-4 rounded-lg top-2 left-2 sm:left-5 sm:top:5 w-fit bg-bright-blue">
+        <Link to="/app/init" replace={true}>
+          <img src={arrowLeft} className="w-6 h-6 sm:w-8 sm:h-8" />
+        </Link>
+      </div>
+
       <div className="mx-auto w-fit">
         <button
           className="flex items-center justify-center gap-2 px-2 py-2 mx-auto mt-8 text-lg rounded-lg md:text-2xl w-fit bg-bright-blue"

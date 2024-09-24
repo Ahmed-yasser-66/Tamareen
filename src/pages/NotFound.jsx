@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import notFoundImg from '../assets/404.svg';
 import arrowLeft from '../assets/arrow-left.svg';
 
-function PageNotFound() {
+function NotFound() {
   return (
     <div className="flex flex-col items-center w-full h-full px-6 mx-auto mt-8 gap-6 max-w-[80rem] justify-evenly sm:flex-row sm:mt-24">
       <div className="flex flex-col gap-8">
@@ -40,4 +40,4 @@ function PageNotFound() {
   );
 }
 
-export default PageNotFound;
+export default NotFound;

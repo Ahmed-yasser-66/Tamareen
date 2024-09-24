@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
-import { useCategoryExercises } from '../hooks/useCategoryExercises';
 import { useExercises } from '../contexts/ExercisesContext';
+import { useCategoryExercises } from '../hooks/useCategoryExercises';
 
 import Exercises from './Exercises';
 

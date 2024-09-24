@@ -91,6 +91,7 @@ function reducer(state, action) {
     case 'plan/deleted': {
       localStorage.removeItem('planDays');
       localStorage.removeItem('planName');
+      localStorage.removeItem('planExercises');
       return { ...state, name: '', days: null, exercises: [] };
     }
 

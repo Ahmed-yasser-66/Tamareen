@@ -1,5 +1,5 @@
 import { usePlan } from '../contexts/PlanContext';
-import { Link, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import arrowUp from '../assets/arrow-up.svg';
 import arrowLeft from '../assets/arrow-left.svg';
 import ExerciseBox from './ExerciseBox';

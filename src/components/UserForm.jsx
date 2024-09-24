@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useUser } from '../contexts/UserContext';
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../contexts/UserContext';
 
 function UserForm() {
   const [name, setName] = useState('');
@@ -25,6 +25,11 @@ function UserForm() {
 
     if (!name || !gender) {
       toast.error('Fill out all fields');
+      return;
+    }
+
+    if (name.length > 10) {
+      toast.error('Name should be less than 10 Characters');
       return;
     }
 

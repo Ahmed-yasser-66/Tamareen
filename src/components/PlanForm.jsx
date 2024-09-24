@@ -6,7 +6,7 @@ function PlanForm() {
   const { changeName, changeDays } = usePlan();
 
   const [planName, setPlanName] = useState('');
-  const [numDays, setNumDays] = useState(null);
+  const [numDays, setNumDays] = useState('');
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -52,7 +52,7 @@ function PlanForm() {
           <select
             className="px-2 py-1 text-xl rounded-md text-dark-gray focus:outline-none focus:ring focus:ring-bright-blue"
             id="days"
-            value={''}
+            value={numDays}
             onChange={(e) => setNumDays(e.target.value)}
           >
             <option value={0}>Choose number of days</option>

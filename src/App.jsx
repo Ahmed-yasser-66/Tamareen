@@ -1,8 +1,8 @@
-import { Suspense, lazy } from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Suspense, lazy } from 'react';
 import { Toaster } from 'react-hot-toast';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ExercisesProvider } from './contexts/ExercisesContext';
 import { UserProvider } from './contexts/UserContext';
 
@@ -10,18 +10,18 @@ const HomePage = lazy(() => import('./pages/HomePage'));
 const About = lazy(() => import('./pages/About'));
 const MainApp = lazy(() => import('./pages/MainApp'));
 const SavedExercises = lazy(() => import('./pages/SavedExercises'));
-const PageNotFound = lazy(() => import('./pages/PageNotFound'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 const Creator = lazy(() => import('./pages/Creator'));
 const ExerciseDetails = lazy(() => import('./pages/ExerciseDetails'));
 
-import InitExercises from './components/InitExercises';
 import CategoryExercises from './components/CategoryExercises';
-import SearchedExercises from './components/SearchedExercises';
-import Loader from './components/Loader';
 import HomeLayout from './components/HomeLayout';
-import Plan from './pages/Plan';
-import { PlanProvider } from './contexts/PlanContext';
+import InitExercises from './components/InitExercises';
+import Loader from './components/Loader';
 import PlanDay from './components/PlanDay';
+import SearchedExercises from './components/SearchedExercises';
+import { PlanProvider } from './contexts/PlanContext';
+import Plan from './pages/Plan';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -80,7 +80,7 @@ function App() {
                   <Route path="plan" element={<Plan />}>
                     <Route path=":planId" element={<PlanDay />} />
                   </Route>
-                  <Route path="*" element={<PageNotFound />} />
+                  <Route path="*" element={<NotFound />} />
                 </Routes>
               </Suspense>
             </BrowserRouter>

@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import arrowDown from '../assets/arrow-down.svg';
-import arrowUp from '../assets/arrow-up.svg';
 import { Link } from 'react-router-dom';
+import arrowDown from '../assets/arrow-down.svg';
 import { useUser } from '../contexts/UserContext';
 
 const Dropdown = () => {
@@ -13,7 +12,6 @@ const Dropdown = () => {
   }
 
   function handleUpdate() {
-    console.log('update');
     editUserData();
   }
 

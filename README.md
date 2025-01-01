@@ -37,17 +37,20 @@ Make sure you have the following installed:
 ### Installation
 
 1. Clone the repository:
-  
+  ```bash
    git clone https://github.com/Ahmed-yasser-66/Tamareen
    cd Tamareen
+  ```
 
 2. Install the dependencies:
-
+   ```bash
    npm install
+   ```
 
-3. Run the development server
-
+2. Run the development server
+   ```bash
    npm run dev
+   ```
 
 ### And Enjoy Coding and discovering 👨‍💻
 
